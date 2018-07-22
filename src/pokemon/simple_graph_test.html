@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset=utf-8>
+		<title>My first three.js app</title>
+		<style>
+			body { margin: 0; }
+			canvas { width: 100%; height: 100% }
+		</style>
+	</head>
+	<body>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r71/three.js"></script>
+		<script src="../../js/pokemonjs/pokestats.js"></script>
+		<script>
+			// Simple Cube Rotation
+			var scene = new THREE.Scene();
+			var camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 0.1, 1000 );
+
+			var renderer = new THREE.WebGLRenderer({ alpha : true });
+			renderer.setSize( window.innerWidth, window.innerHeight );
+			renderer.setClearColor( 0x000000, 0 ); 	// background color
+			document.body.appendChild( renderer.domElement );
+
+			// want camera to be such that:
+			// 	(0,0) is at the bottom-left corner of the window (ish)
+			camera.position.x = 3;
+			camera.position.y = 2;
+			camera.position.z = 5;
+
+
+
+
+
+			scene.add( new THREE.AxisHelper( 5 ) ); 	// small default axes
+
+
+
+
+
+			// pokestats data
+			var geometry = new THREE.BoxGeometry( 0.05, 0.05, 0.05 );
+            var startColor = 0xff0000;
+			var material = new THREE.MeshBasicMaterial( { color: startColor } );
+
+            // assumes color is a Color and step is an int
+            // doesn't work TODO
+            function incrementColor(color, step){
+                console.log(color.getHex());
+			    var intColor = parseInt(color.getHex(), 16);
+                console.log(intColor);
+                intColor += step;
+                console.log(intColor);
+                intColor = intColor.toString(16);
+                console.log(new THREE.Color(intColor));
+                return new THREE.Color(intColor) ;
+			};
+
+            var maxX = 500;
+			var maxY = 6000;
+            var point;
+            // graph each pokemon's attack vs max cp values
+			for (var i = data.length - 1; i >= 0; i--) {
+				point = new THREE.Mesh( geometry, material );
+				point.position.x = 5.0 / maxX * data[i][0];
+				point.position.y = 5.0 / maxY * data[i][4];
+				point.position.z = 0.05
+
+				scene.add( point );
+			};
+
+
+
+
+
+            // doesn't animate the last point right now? TODO
+			function animate() {
+				requestAnimationFrame( animate );
+				point.rotation.x += 0.01;
+				point.rotation.y += 0.01;
+				renderer.render( scene, camera );
+			}
+			animate();
+		</script>
+	</body>
+</html>
